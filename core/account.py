@@ -22,6 +22,7 @@ class Account:
         self.address = self.w3.to_checksum_address(self.account.address)
         self.info = f'[№{self.index} - {self.address[:5]}...{self.address[-5:]}]'
         self.traded_value = 0
+        self.okx_address = None
 
     @property
     def ether_balance(self) -> float:
@@ -32,10 +33,12 @@ class Account:
         from .aave import Aave
         from .compound import Compound
         from .moonwell import Moonwell
+        from .seamless import Seamless
         self.aave_dep = Aave(self).deposited_amount
         self.moonwell_dep = Moonwell(self).deposited_amount
         self.compound_dep = Compound(self).deposited_amount
-        return self.aave_dep + self.moonwell_dep + self.compound_dep
+        self.seamless_dep = Seamless(self).deposited_amount
+        return self.aave_dep + self.moonwell_dep + self.compound_dep + self.seamless_dep
 
     def get_tx_data(self, value: int = 0) -> dict:
         return {
@@ -88,7 +91,7 @@ class Account:
     @check_gas
     def withdraw_to_okx(self) -> None:
         if self.okx_address is None: 
-            logger.info(f'{self.info} ОКХ адрес не задан!')
+            logger.warning(f'{self.info} Вывод невозможен! ОКХ адрес не задан!')
             return
         self.okx_address = self.w3.to_checksum_address(self.okx_address)
         amount_wei = self.w3.eth.get_balance(self.address) - (random.uniform(*AMOUNT_TO_SAVE) * 10**18)
@@ -104,7 +107,8 @@ class Account:
         from .aave import Aave
         from .compound import Compound
         from .moonwell import Moonwell
-        for dapp in [Moonwell(self), Aave(self), Compound(self)]:
+        from .seamless import Seamless
+        for dapp in [Moonwell(self), Aave(self), Compound(self), Seamless(self)]:
             if dapp.deposited_amount > 0.0001: # 0.0001 ETH
                 logger.info(f'{self.info} Найдено {dapp.deposited_amount:.5f} ETH в {dapp.__class__.__name__}!')
                 dapp.withdraw()
