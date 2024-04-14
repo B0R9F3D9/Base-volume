@@ -25,7 +25,7 @@ WITHDRAW_FROM_OKX: bool = False
 # Мин, Макс сумма для вывода с ОКХ (в ETH)
 AMOUNT_TO_WITHDRAW_FROM_OKX: tuple[float, float] = (0.011, 0.02)
 
-# Выводить `AMOUNT_TO_WITHDRAW_FROM_OKX` на OKX (если False, то после прокрута баланс не будет отправляться)
+# Выводить баланс минус `AMOUNT_TO_SAVE` на OKX (Да, Нет)
 WITHDRAW_TO_OKX: bool = True
 # Мин, Макс сумма для сохранения на балансе (в ETH)
 AMOUNT_TO_SAVE: tuple[float, float] = (0.001, 0.002)
