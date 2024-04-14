@@ -6,6 +6,7 @@ from core.account import Account
 from core.aave import Aave
 from core.compound import Compound
 from core.moonwell import Moonwell
+from core.seamless import Seamless
 from core.okx import OKX
 from core.checker import Checker
 from core.utils import sleep
@@ -21,6 +22,7 @@ def main() -> None:
             Choice('1️⃣  Aave', Aave),
             Choice('2️⃣  Compound', Compound),
             Choice('3️⃣  Moonwell', Moonwell),
+            Choice('4️⃣  Seamless', Seamless),
             Choice('🎲 Рандомный dApp', 'random'),
             Choice('📊 Чекер', 'checker'),
             Choice('❌ Выход', 'exit')
@@ -48,7 +50,7 @@ def main() -> None:
         target = random.uniform(*TARGET_VALUE)
         while acc.traded_value < target:
             if module == 'random':
-                random.choice([Aave, Compound, Moonwell])(acc).run()
+                random.choice([Aave, Compound, Moonwell, Seamless])(acc).run()
             else:
                 module(acc).run()
             logger.debug(f'Теперь объём: {acc.traded_value:.2f} ETH | Таргет: {target:.2f} ETH')
