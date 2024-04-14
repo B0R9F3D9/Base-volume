@@ -2,9 +2,10 @@ import aiohttp, asyncio
 from tabulate import tabulate
 
 from .account import Account
-from .aave import Aave
-from .compound import Compound
-from .moonwell import Moonwell
+# from .aave import Aave
+# from .compound import Compound
+# from .moonwell import Moonwell
+# from .seamless import Seamless
 from .utils import get_eth_price, async_retry
 
 
@@ -19,6 +20,7 @@ class Checker:
         # aave_dep = Aave(acc).deposited_amount
         # moonwell_dep = Moonwell(acc).deposited_amount
         # compound_dep = Compound(acc).deposited_amount
+        # seamless_dep = Seamless(acc).deposited_amount
 
         acc_value = 0
         async with aiohttp.ClientSession() as session:
@@ -52,6 +54,7 @@ class Checker:
             # 'Деп в Aave': f'{aave_dep:.5f} ETH (${aave_dep*self.eth_price:.2f})',
             # 'Деп в Compound': f'{compound_dep:.5f} ETH (${compound_dep*self.eth_price:.2f})',
             # 'Деп в Moonwell': f'{moonwell_dep:.5f} ETH (${moonwell_dep*self.eth_price:.2f})',
+            # 'Деп в Seamless': f'{seamless_dep:.5f} ETH (${seamless_dep*self.eth_price:.2f})',
         }
 
     async def run(self) -> None:
